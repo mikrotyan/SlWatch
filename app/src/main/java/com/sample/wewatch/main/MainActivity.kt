@@ -53,13 +53,12 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
 
   override fun onStart() {
     super.onStart()
-    dataSource = LocalDataSource(application)
-    getMyMoviesList()
+    mainPresenter.getMyMoviesList()
   }
 
   override fun onStop() {
     super.onStop()
-    compositeDisposable.clear()
+    mainPresenter.stop()
   }
 
   private fun setupViews() {
@@ -101,19 +100,20 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
       }
     }
 
-  fun displayMovies(movieList: List<Movie>?) {
-    if (movieList == null || movieList.size == 0) {
-      Log.d(TAG, "No movies to display")
-      moviesRecyclerView.visibility = INVISIBLE
-      noMoviesLayout.visibility = VISIBLE
-    } else {
-      adapter = MainAdapter(movieList, this@MainActivity)
-      moviesRecyclerView.adapter = adapter
-
-      moviesRecyclerView.visibility = VISIBLE
-      noMoviesLayout.visibility = INVISIBLE
-    }
+  //1
+  override fun displayMovies(movieList: List<Movie>) {
+    adapter.movieList = movieList
+    adapter.notifyDataSetChanged()
+    moviesRecyclerView.visibility = VISIBLE
+    noMoviesTextView.visibility = INVISIBLE
   }
+  //2
+  override fun displayNoMovies() {
+    Log.d(TAG, "No movies to display.")
+    moviesRecyclerView.visibility = INVISIBLE
+    noMoviesTextView.visibility = VISIBLE
+  }
+
 
   //fab onClick
   fun goToAddMovieActivity(v: View) {
@@ -157,9 +157,14 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
     Toast.makeText(this@MainActivity, str, Toast.LENGTH_LONG).show()
   }
 
-  fun displayError(e: String) {
-    showToast(e)
+  override fun displayMessage(message: String ) {
+    Toast.makeText(this@ MainActivity , string, Toast. LENGTH_LONG )
+      .show()
   }
+  override fun displayError (message: String ) {
+    displayMessage (message)
+  }
+
 
   companion object {
     const val ADD_MOVIE_ACTIVITY_REQUEST_CODE = 1
