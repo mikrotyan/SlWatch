@@ -102,16 +102,23 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
 
   //1
   override fun displayMovies(movieList: List<Movie>) {
-    adapter.movieList = movieList
-    adapter.notifyDataSetChanged()
-    moviesRecyclerView.visibility = VISIBLE
-    noMoviesTextView.visibility = INVISIBLE
+      if (movieList == null || movieList.size == 0) {
+          Log.d(TAG, "No movies to display")
+          moviesRecyclerView.visibility = INVISIBLE
+          noMoviesLayout.visibility = VISIBLE
+      } else {
+          adapter = MainAdapter(movieList, this@MainActivity)
+          moviesRecyclerView.adapter = adapter
+
+          moviesRecyclerView.visibility = VISIBLE
+          noMoviesLayout.visibility = INVISIBLE
+      }
   }
   //2
   override fun displayNoMovies() {
     Log.d(TAG, "No movies to display.")
     moviesRecyclerView.visibility = INVISIBLE
-    noMoviesTextView.visibility = VISIBLE
+    noMoviesLayout.visibility = VISIBLE
   }
 
 
@@ -158,7 +165,7 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
   }
 
   override fun displayMessage(message: String ) {
-    Toast.makeText(this@ MainActivity , string, Toast. LENGTH_LONG )
+    Toast.makeText(this@MainActivity , message, Toast. LENGTH_LONG )
       .show()
   }
   override fun displayError (message: String ) {

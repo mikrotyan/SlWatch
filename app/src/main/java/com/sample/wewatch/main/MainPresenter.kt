@@ -1,8 +1,19 @@
 package com.sample.wewatch
 
+import android.util.Log
+import com.sample.wewatch.model.LocalDataSource
+import com.sample.wewatch.model.Movie
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.annotations.NonNull
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableObserver
+import io.reactivex.schedulers.Schedulers
+
 class MainPresenter(
     private var viewInterface: MainContract.ViewInterface,
-    private var dataSource: LocalDataSource) : MainContract.PresenterInterface {
+    private var dataSource: LocalDataSource
+) : MainContract.PresenterInterface {
     private val TAG = "MainPresenter"
 
     private val compositeDisposable = CompositeDisposable()

@@ -1,5 +1,7 @@
 package com.sample.wewatch
 
+import com.sample.wewatch.model.Movie
+
 class MainContract {
     interface PresenterInterface {
         fun getMyMoviesList()
@@ -8,7 +10,7 @@ class MainContract {
     }
 
     interface ViewInterface {
-        fun displayMovies (movieList: List < Movie >)
+        fun displayMovies (movieList: List <Movie>)
         fun displayNoMovies ()
         fun displayMessage (message: String )
         fun displayError (message: String )
